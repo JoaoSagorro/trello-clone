@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { deleteBoard } from "@/actions/delete-board";
+
 
 interface BoardProps {
   title: string;
