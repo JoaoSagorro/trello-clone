@@ -3,6 +3,7 @@
 import { z } from "zod";
 
 import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 
 const CreateBoard = z.object({
   title: z.string(),
@@ -20,5 +21,5 @@ export async function create(formData: FormData) {
     }
   });
 
-  revalidate
+  revalidatePath("/organization/org_2bBJppc2owwpBX37vG9nlGMABKc");
 };
