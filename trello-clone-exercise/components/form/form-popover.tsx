@@ -16,6 +16,7 @@ import { X } from "lucide-react";
 import { toast } from "sonner";
 import { FormPicker } from "./form-picker";
 import { ElementRef, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 
 interface FormPopoverProps {
@@ -33,15 +34,16 @@ export const FormPopover = ({
   sideOffset = 0,
 }: FormPopoverProps) => {
 
+  const router = useRouter();
   const closeRef = useRef<ElementRef<"button">>(null);
 
   const { execute, fieldErrors } = useAction(createBoard, {
     onSuccess: (data) => {
       toast.success("Board created!");
-      
+      closeRef.current?.click();
+      router.push(`/board/${data.id}`);
     },
     onError: (error) => {
-      console.log({error});
       toast.error(error);
     }
   });
