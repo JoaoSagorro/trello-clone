@@ -40,14 +40,14 @@ const BoardIdLayout = async ({
   const { orgId } = auth();
 
   if (!orgId) {
-    redirect("/select-org")
+    redirect("/select-org");
   };
 
   const board = await db.board.findUnique({
     where: {
       id: params.boardId,
       orgId,
-    }
+    },
   });
 
   if (!board) {
@@ -59,7 +59,7 @@ const BoardIdLayout = async ({
       className="relative h-full bg-no-repeat bg-cover bg-center"
       style={{ backgroundImage: `url(${board.imageFullUrl})`}}
     >
-      <BoardNavbar id={params.boardId}/>
+      <BoardNavbar data={board}/>
       <div className="absolute inset-0 bg-black/10"/>
       <main className="relative pt-28 h-full">
         {children}
@@ -67,3 +67,5 @@ const BoardIdLayout = async ({
     </div>
   );
 };
+
+export default BoardIdLayout;
