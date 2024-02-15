@@ -58,6 +58,75 @@ export const ListContainer = ({
 
       //TODO: trigger server action
     }
+
+    // user moves a card
+
+    if (type === "card") {
+      let newOrderedData = [...orderedData];
+
+      // source and destination list
+
+      const sourceList = newOrderedData.find(list => list.id === source.droppableId);
+
+      const destList = newOrderedData.find(list => list.id === destination.droppableId);
+
+
+      if (!sourceList || !destList) {
+        return;
+      };
+
+      // check if cards exist on the sourceList
+
+      if (!sourceList.cards) {
+        sourceList.cards = [];
+      };
+
+      // check if cards exists on the destList
+      if (!destList.cards) {
+        destList.cards = [];
+      };
+
+      // moving the card in the same list
+      if (source.droppableId === destination.droppableId) {
+        const reorderedCards = reOrder(
+          sourceList.cards,
+          source.index,
+          destination.index,
+        );
+        reorderedCards.forEach((card, idx) => {
+          card.order = idx;
+        });
+
+        sourceList.cards = reorderedCards;
+
+        setOrderedData(newOrderedData);
+
+        // TODO: Trigger the server action
+        // User moves the card to another list
+      } else {
+        // remove card from the source list
+        const [ moveCard ] = sourceList.cards.splice(source.index, 1);
+
+        // Assign the new listId to the moved card
+        moveCard.listId = destination.droppableId;
+
+        // Add card to the destination list
+        destList.cards.splice(destination.index, 0, moveCard);
+
+        sourceList.cards.forEach((card, idx) => {
+          card.order = idx;
+        });
+
+        // Update the order for each card on the destination list
+        destList.cards.forEach((card, idx) => {
+          card.order = idx;
+        });
+
+        setOrderedData(newOrderedData);
+
+        // TODO: trigger server action
+      }
+    }
   };
 
   return(
