@@ -3,10 +3,14 @@
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 
+import { useAction } from "@/hooks/use-action";
+import { updateListOrder } from "@/actions/update-list-order";
+
 import { ListWithCards } from "@/types";
 
 import { ListForm } from "./list-form";
 import { ListItem } from "./list-item";
+import { toast } from "sonner";
 
 interface ListContainerProps {
   data: ListWithCards[];
@@ -28,6 +32,15 @@ export const ListContainer = ({
 
   const [ orderedData, setOrderedData ] = useState(data);
 
+  const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
+    onSuccess: () => {
+      toast.success('List reordered!');
+    },
+    onError: (error) => {
+      toast.error(error);
+    }
+  });
+
   useEffect(() => {
     setOrderedData(data);
   }, [data]);
@@ -48,7 +61,7 @@ export const ListContainer = ({
     // if a user moves a list
 
     if (type === "list") {
-      const items = reOrder(
+      const items = reorder(
         orderedData,
         source.index,
         destination.index,
@@ -57,6 +70,7 @@ export const ListContainer = ({
       setOrderedData(items);
 
       //TODO: trigger server action
+      executeUpdateListOrder({ items, boardId});
     }
 
     // user moves a card
