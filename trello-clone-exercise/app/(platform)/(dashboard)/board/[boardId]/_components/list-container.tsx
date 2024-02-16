@@ -17,7 +17,7 @@ interface ListContainerProps {
   boardId: string;
 };
 
-function reOrder<T>(list: T[], startIndex: number, endIndex: number) {
+function reorder<T>(list: T[], startIndex: number, endIndex: number) {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -38,7 +38,7 @@ export const ListContainer = ({
     },
     onError: (error) => {
       toast.error(error);
-    }
+    },
   });
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export const ListContainer = ({
       setOrderedData(items);
 
       //TODO: trigger server action
-      executeUpdateListOrder({ items, boardId});
+      executeUpdateListOrder({ items, boardId });
     }
 
     // user moves a card
@@ -85,6 +85,7 @@ export const ListContainer = ({
       const destList = newOrderedData.find(list => list.id === destination.droppableId);
 
 
+      // if we don't have the source list or the destination list, don't do anything
       if (!sourceList || !destList) {
         return;
       };
@@ -102,7 +103,7 @@ export const ListContainer = ({
 
       // moving the card in the same list
       if (source.droppableId === destination.droppableId) {
-        const reorderedCards = reOrder(
+        const reorderedCards = reorder(
           sourceList.cards,
           source.index,
           destination.index,
@@ -127,6 +128,7 @@ export const ListContainer = ({
         // Add card to the destination list
         destList.cards.splice(destination.index, 0, moveCard);
 
+        // this changes the order of the cards
         sourceList.cards.forEach((card, idx) => {
           card.order = idx;
         });
