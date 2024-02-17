@@ -16,7 +16,7 @@ export const UpdateCard = z.object({
       invalid_type_error: "Title is required",
       }).min(3, {
       message: "Title is too short",
-      })
+    })
     ),
   id: z.string(),
 });

@@ -65,7 +65,7 @@ export const Description = ({
   });
 
   const onSubmit = (formData: FormData) => {
-    const description = formData.get("descripition") as string;
+    const description = formData.get("description") as string;
     const boardId = params.boardId as string;
 
     // TODO: Execute
@@ -74,6 +74,7 @@ export const Description = ({
       description,
       boardId,
     });
+    console.log(description);
   };
 
   return(
