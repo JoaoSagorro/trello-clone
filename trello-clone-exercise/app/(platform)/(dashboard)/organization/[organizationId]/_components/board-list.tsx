@@ -7,6 +7,8 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MAX_FREE_BOARDS } from "@/constants/boards";
+import { getAvailableCount } from "@/lib/org-limit";
 
 export const BoardList = async () => {
 
