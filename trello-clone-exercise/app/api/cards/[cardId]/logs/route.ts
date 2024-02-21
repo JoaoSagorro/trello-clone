@@ -26,7 +26,9 @@ export async function GET(
       take: 3,
     });
 
+    return NextResponse.json(auditLogs);
+
   } catch (error) {
 
   }
-}
+};
